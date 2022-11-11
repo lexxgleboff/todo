@@ -1,21 +1,38 @@
-import React from "react";
+import React, { Component } from "react";
 
 import './TaskFilter.css'
 
-const TaskFilter = () => {
+export default class TaskFilter extends Component {
+
+  render() {
     return (
         <ul className="filters">
-            <li>
-              <button className="selected">All</button>
-            </li>
-            <li>
-              <button>Active</button>
-            </li>
-            <li>
-              <button>Completed</button>
-            </li>
-          </ul>
+          <li>
+            <button className="selected">All</button>
+          </li>
+          <li>
+            <button>Active</button>
+          </li>
+          <li>
+            <button>Completed</button>
+          </li>
+        </ul>
     )
+  }
 }
 
-export default TaskFilter
+// const TaskFilter = () => {
+    // return (
+    //     <ul className="filters">
+    //         <li>
+    //           <button className="selected">All</button>
+    //         </li>
+    //         <li>
+    //           <button>Active</button>
+    //         </li>
+    //         <li>
+    //           <button>Completed</button>
+    //         </li>
+    //       </ul>
+    // )
+// }
