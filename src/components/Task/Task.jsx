@@ -3,27 +3,27 @@ import React, { Component } from "react";
 import './Task.css'
 
 export default class Task extends Component {
-    constructor() {
-        super()
-        this.state = {
-            completed: false
-        }
-    }
+    // constructor() {
+    //     super()
+    //     this.state = {
+    //         completed: false
+    //     }
+    // }
 
-    setChecked = () => {
-        this.setState((state) => {
-            return {
-                completed: !this.state.completed
-            }
-        })
-    }
+    // setChecked = () => {
+    //     this.setState((state) => {
+    //         return {
+    //             completed: !this.state.completed
+    //         }
+    //     })
+    // }
 
     render() {
         
-        const {completed} = this.state
+        // const {completed} = this.state
+ 
+        const { id, label, completed, onDeleted, onCompleted } = this.props
         let classLabel = completed ? 'completed' : ''
-
-        const { id, label, onDeleted } = this.props
         return (
             <li key={id} className={classLabel}>
                 <div className="view">
@@ -31,7 +31,7 @@ export default class Task extends Component {
                         className="toggle"
                         type="checkbox" 
                         checked={completed}
-                        onChange={this.setChecked}
+                        onChange={onCompleted}
                     />
                     <label>
                         <span className="description">{ label }</span>

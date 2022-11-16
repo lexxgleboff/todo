@@ -1,20 +1,41 @@
-import React from "react"
-import TaskList from "../TaskList"
-import Footer from "../Footer"
+import React, { Component } from "react"
 
+import './NewTaskForm.css'
 
-const NewTaskForm = ({data, onDeleted}) => {
-    return (
-        <section className="main">
-            <TaskList
-                todos={data} 
-                onDeleted={(id) => onDeleted(id)}
-            />
-            <Footer />
-        </section>
+export default class NewTaskForm extends Component {
 
-    )
+    state = {
+        value: ''
+    }
+
+    onChangeHandler = (e) => {
+            this.setState({
+                value: e.target.value
+            })
+    }
+
+    onSubmit = (e) => {
+        e.preventDefault()
+        this.props.addTask(this.state.value)
+        this.setState({
+            value: ''
+        })
+    }
+
+    render() {
+        return (
+            <header className="header">
+                <h1>todos</h1>
+                <form onSubmit={this.onSubmit}>
+                    <input
+                        className="new-todo"
+                        placeholder="What needs to be done?"
+                        autoFocus 
+                        onChange={this.onChangeHandler}  
+                        value={this.state.value}
+                    />
+                </form>
+            </header>
+        )
+    }
 }
-
-          
-export default NewTaskForm

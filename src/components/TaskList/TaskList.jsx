@@ -8,7 +8,7 @@ export default class TaskList extends Component {
 
     render() {
 
-        const { todos, onDeleted } = this.props
+        const { todos, onDeleted, onCompleted } = this.props
 
         const elements = todos.map((item) => {
             const {id, ...itemProps} = item
@@ -17,6 +17,7 @@ export default class TaskList extends Component {
                         key={id}
                         {...itemProps} 
                         onDeleted={() => onDeleted(id)}
+                        onCompleted={() => onCompleted(id)}
                     />
                 )
             })
