@@ -9,9 +9,15 @@ export default class NewTaskForm extends Component {
     }
 
     onChangeHandler = (e) => {
+        if (e.target.value.charAt(0) === " ") {
+            this.setState({
+                value: ''
+            })
+        } else {
             this.setState({
                 value: e.target.value
             })
+        }
     }
 
     onSubmit = (e) => {

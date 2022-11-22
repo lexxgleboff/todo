@@ -1,8 +1,18 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types'
 
 import './TaskFilter.css'
 
 export default class TaskFilter extends Component {
+
+  static defaultProps = {
+    filter: 'all',
+    onFilterChange: () => {}
+  }
+  static propTypes = {
+      filter: PropTypes.string,
+      onFilterChange: PropTypes.func
+  }
 
   buttons = [
     {name: 'all', label: 'All'},
@@ -34,18 +44,3 @@ export default class TaskFilter extends Component {
   }
 }
 
-// const TaskFilter = () => {
-    // return (
-    //     <ul className="filters">
-    //         <li>
-    //           <button className="selected">All</button>
-    //         </li>
-    //         <li>
-    //           <button>Active</button>
-    //         </li>
-    //         <li>
-    //           <button>Completed</button>
-    //         </li>
-    //       </ul>
-    // )
-// }
