@@ -56,6 +56,7 @@ export default class App extends Component {
   }
 
   addTask = (text) => {
+    console.log(text)
     if (text) {
       const newTask = this.createDataItem(text)
       this.setState(({ data }) => {
