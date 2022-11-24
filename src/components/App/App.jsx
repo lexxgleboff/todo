@@ -34,10 +34,8 @@ export default class App extends Component {
 
   deleteTask = (id) => {
     this.setState(({ data }) => {
-      const index = data.findIndex((el) => el.id === id)
-      const newArray = [...data.slice(0, index), ...data.slice(index + 1)]
       return {
-        data: newArray,
+        data: data.filter((el) => el.id !== id),
       }
     })
   }
@@ -67,41 +65,32 @@ export default class App extends Component {
     }
   }
 
-  onEditChange = (edit) => {
+  onEditChange = (id) => {
     this.setState(({ data }) => {
-      const index = data.findIndex((el) => el.label === edit)
-      const editTask = data[index]
-      const newItem = { ...editTask, edit: true }
-      const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
       return {
-        data: newArray,
+        data: data.map((item) => {
+          return item.id === id ? { ...item, edit: true } : item
+        }),
       }
     })
   }
 
   updateTask = (labelUpdate, id) => {
     this.setState(({ data }) => {
-      const index = data.findIndex((el) => el.id === id)
-      const editTask = data[index]
-      const newItem = { ...editTask, label: labelUpdate, edit: false }
-      const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
       return {
-        data: newArray,
+        data: data.map((item) => {
+          return item.id === id ? { ...item, label: labelUpdate, edit: false } : item
+        }),
       }
     })
   }
 
   onCompleted = (id) => {
     this.setState(({ data }) => {
-      const index = data.findIndex((el) => el.id === id)
-      const completedTask = data[index]
-      const newItem = {
-        ...completedTask,
-        completed: !completedTask.completed,
-      }
-      const newArray = [...data.slice(0, index), newItem, ...data.slice(index + 1)]
       return {
-        data: newArray,
+        data: data.map((item) => {
+          return item.id === id ? { ...item, completed: !item.completed } : item
+        }),
       }
     })
   }

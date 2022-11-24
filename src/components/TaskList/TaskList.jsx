@@ -18,7 +18,7 @@ export default class TaskList extends Component {
           label={label}
           onDeleted={() => onDeleted(id)}
           onCompleted={() => onCompleted(id)}
-          onEdit={() => onEdit(label)}
+          onEdit={() => onEdit(id)}
           updateTask={updateTask}
         />
       )
@@ -35,7 +35,7 @@ TaskList.defaultProps = {
   updateTask: () => {},
 }
 TaskList.propTypes = {
-  todos: PropTypes.arrayOf,
+  todos: PropTypes.arrayOf(PropTypes.objectOf),
   onDeleted: PropTypes.func,
   onCompleted: PropTypes.func,
   onEdit: PropTypes.func,
