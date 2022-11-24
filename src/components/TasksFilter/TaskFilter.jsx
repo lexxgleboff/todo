@@ -1,23 +1,13 @@
-import React, { Component } from "react";
+import { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import './TaskFilter.css'
 
 export default class TaskFilter extends Component {
-
-  static defaultProps = {
-    filter: 'all',
-    onFilterChange: () => {}
-  }
-  static propTypes = {
-      filter: PropTypes.string,
-      onFilterChange: PropTypes.func
-  }
-
   buttons = [
-    {name: 'all', label: 'All'},
-    {name: 'active', label: 'Active'},
-    {name: 'completed', label: 'Completed'}
+    { name: 'all', label: 'All' },
+    { name: 'active', label: 'Active' },
+    { name: 'completed', label: 'Completed' },
   ]
 
   render() {
@@ -27,20 +17,21 @@ export default class TaskFilter extends Component {
       const selected = isActive ? 'selected' : ''
       return (
         <li key={name}>
-          <button
-            className={selected}  
-            onClick={() => onFilterChange(name)}
-          >
+          <button type="button" className={selected} onClick={() => onFilterChange(name)}>
             {label}
           </button>
         </li>
       )
     })
-    return (
-        <ul className="filters">
-          {buttons}
-        </ul>
-    )
+    return <ul className="filters">{buttons}</ul>
   }
 }
 
+TaskFilter.defaultProps = {
+  filter: 'all',
+  onFilterChange: () => {},
+}
+TaskFilter.propTypes = {
+  filter: PropTypes.string,
+  onFilterChange: PropTypes.func,
+}
