@@ -11,9 +11,9 @@ export default class App extends Component {
 
   state = {
     data: [
-      this.createDataItem('Completed task'),
-      this.createDataItem('Editing task'),
-      this.createDataItem('Active task'),
+      this.createDataItem('Completed task', 0, 0),
+      this.createDataItem('Editing task', 0, 0),
+      this.createDataItem('Active task', 0, 0),
     ],
     filter: 'all',
   }
@@ -53,9 +53,9 @@ export default class App extends Component {
     })
   }
 
-  addTask = (text) => {
+  addTask = (text, min, sec) => {
     if (text) {
-      const newTask = this.createDataItem(text)
+      const newTask = this.createDataItem(text, Number(min), Number(sec))
       this.setState(({ data }) => {
         const newArray = [...data, newTask]
         return {
@@ -95,7 +95,7 @@ export default class App extends Component {
     })
   }
 
-  createDataItem(label) {
+  createDataItem(label, min = 0, sec = 0) {
     return {
       label,
       completed: false,
@@ -103,6 +103,8 @@ export default class App extends Component {
       id: this.maxId++,
       created: new Date(),
       edit: false,
+      min,
+      sec,
     }
   }
 
