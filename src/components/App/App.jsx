@@ -7,14 +7,11 @@ import NewTaskForm from '../NewTaskForm'
 import './App.css'
 
 export default function App() {
-  let maxId = 0
-
   function createDataItem(label, min = 0, sec = 0) {
     return {
       label,
       completed: false,
-      // eslint-disable-next-line no-plusplus
-      id: maxId++,
+      id: Math.floor(Math.random() * 1000),
       created: new Date(),
       edit: false,
       min,
