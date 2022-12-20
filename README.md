@@ -1,5 +1,5 @@
 ## Todo app - планировщик дел
-link to Vercel: https://todo-git-timer-lexxgleboff.vercel.app/
+link to Vercel: https://todo-39965bduu-lexxgleboff.vercel.app/
 
 ## Функционал
 - возможность добавления задач по нажатию на enter;
@@ -10,3 +10,4 @@ link to Vercel: https://todo-git-timer-lexxgleboff.vercel.app/
 - логика изменения состояния задачи активный-выполненный;
 - задействована библиотека date-fns для отображения прошедшего времени с момента добавления задачи
 - Добавлен таймер и секундомер для каждой задачи
+- Реализовано на хуках
