@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import TaskList from '../TaskList'
 import Footer from '../Footer'
@@ -11,7 +12,7 @@ export default function App() {
     return {
       label,
       completed: false,
-      id: Math.floor(Math.random() * 1000),
+      id: uuidv4(),
       created: new Date(),
       edit: false,
       min,
