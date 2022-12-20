@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { useState } from 'react'
 
 import TaskList from '../TaskList'
 import Footer from '../Footer'
@@ -6,21 +6,31 @@ import NewTaskForm from '../NewTaskForm'
 
 import './App.css'
 
-export default class App extends Component {
-  maxId = 0
+export default function App() {
+  let maxId = 0
 
-  state = {
-    data: [
-      this.createDataItem('Completed task', 0, 0),
-      this.createDataItem('Editing task', 0, 0),
-      this.createDataItem('Active task', 0, 0),
-    ],
-    filter: 'all',
+  function createDataItem(label, min = 0, sec = 0) {
+    return {
+      label,
+      completed: false,
+      // eslint-disable-next-line no-plusplus
+      id: maxId++,
+      created: new Date(),
+      edit: false,
+      min,
+      sec,
+    }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  onfilter(items, filter) {
-    switch (filter) {
+  const [data, setData] = useState([
+    createDataItem('have a lunch', 0, 0),
+    createDataItem('take medicine', 0, 0),
+    createDataItem('write a post', 0, 0),
+  ])
+  const [filter, setFilter] = useState('all')
+
+  function onfilter(items, filterItem) {
+    switch (filterItem) {
       case 'all':
         return items
       case 'active':
@@ -32,107 +42,69 @@ export default class App extends Component {
     }
   }
 
-  deleteTask = (id) => {
-    this.setState(({ data }) => {
-      return {
-        data: data.filter((el) => el.id !== id),
-      }
-    })
+  const deleteTask = (id) => {
+    setData((arr) => arr.filter((el) => el.id !== id))
   }
 
-  onFilterChange = (filter) => {
-    this.setState({ filter })
+  const onFilterChange = (filterItem) => {
+    setFilter(filterItem)
   }
 
-  deletedCompletedTask = () => {
-    this.setState(({ data }) => {
-      const newArray = data.filter((el) => !el.completed)
-      return {
-        data: newArray,
-      }
-    })
+  const deletedCompletedTask = () => {
+    setData((arr) => arr.filter((el) => !el.completed))
   }
 
-  addTask = (text, min, sec) => {
+  const addTask = (text, min, sec) => {
     if (text) {
-      const newTask = this.createDataItem(text, Number(min), Number(sec))
-      this.setState(({ data }) => {
-        const newArray = [...data, newTask]
-        return {
-          data: newArray,
-        }
+      const newTask = createDataItem(text, Number(min), Number(sec))
+      setData((arr) => [...arr, newTask])
+    }
+  }
+
+  const onEditChange = (id) => {
+    setData((arr) => {
+      return arr.map((item) => {
+        return item.id === id ? { ...item, edit: true } : item
       })
-    }
-  }
-
-  onEditChange = (id) => {
-    this.setState(({ data }) => {
-      return {
-        data: data.map((item) => {
-          return item.id === id ? { ...item, edit: true } : item
-        }),
-      }
     })
   }
 
-  updateTask = (labelUpdate, id) => {
-    this.setState(({ data }) => {
-      return {
-        data: data.map((item) => {
-          return item.id === id ? { ...item, label: labelUpdate, edit: false } : item
-        }),
-      }
+  const updateTask = (labelUpdate, id) => {
+    setData((arr) => {
+      return arr.map((item) => {
+        return item.id === id ? { ...item, label: labelUpdate, edit: false } : item
+      })
     })
   }
 
-  onCompleted = (id) => {
-    this.setState(({ data }) => {
-      return {
-        data: data.map((item) => {
-          return item.id === id ? { ...item, completed: !item.completed } : item
-        }),
-      }
+  const onCompleted = (id) => {
+    setData((arr) => {
+      return arr.map((item) => {
+        return item.id === id ? { ...item, completed: !item.completed } : item
+      })
     })
   }
 
-  createDataItem(label, min = 0, sec = 0) {
-    return {
-      label,
-      completed: false,
-      // eslint-disable-next-line no-plusplus
-      id: this.maxId++,
-      created: new Date(),
-      edit: false,
-      min,
-      sec,
-    }
-  }
-
-  render() {
-    const { data, filter, edit } = this.state
-
-    const completedCount = data.length - data.filter((el) => el.completed).length
-    const visibleItems = this.onfilter(data, filter)
-    return (
-      <section className="todoapp">
-        <NewTaskForm addTask={this.addTask} />
-        <section className="main">
-          <TaskList
-            todos={visibleItems}
-            onDeleted={this.deleteTask}
-            onCompleted={this.onCompleted}
-            onEdit={this.onEditChange}
-            edit={edit}
-            updateTask={this.updateTask}
-          />
-          <Footer
-            filter={filter}
-            onFilterChange={this.onFilterChange}
-            itemsLeft={completedCount}
-            deletedCompletedTask={this.deletedCompletedTask}
-          />
-        </section>
+  const completedCount = data.length - data.filter((el) => el.completed).length
+  const visibleItems = onfilter(data, filter)
+  return (
+    <section className="todoapp">
+      <NewTaskForm addTask={addTask} />
+      <section className="main">
+        <TaskList
+          todos={visibleItems}
+          onDeleted={deleteTask}
+          onCompleted={onCompleted}
+          onEdit={onEditChange}
+          updateTask={updateTask}
+        />
+        <Footer
+          filter={filter}
+          onFilterChange={onFilterChange}
+          itemsLeft={completedCount}
+          deletedCompletedTask={deletedCompletedTask}
+        />
       </section>
-    )
-  }
+    </section>
+  )
 }

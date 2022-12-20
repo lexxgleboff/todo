@@ -1,66 +1,44 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { Component } from 'react'
+import { useState } from 'react'
 // import { formatDistanceToNow } from 'date-fns'
 import PropTypes from 'prop-types'
 
 import './Task.css'
 import Timer from '../Timer/Timer'
 
-export default class Task extends Component {
-  state = {
-    value: '',
-  }
+export default function Task({ id, label, completed, onDeleted, onCompleted, onEdit, edit, min, sec, updateTask }) {
+  const [value, setValue] = useState('')
 
-  onChangeValue = (e) => {
-    this.setState({ value: e.target.value })
-  }
-
-  onSubmitEdit = (e) => {
-    const { id, updateTask } = this.props
-    const { value } = this.state
+  function onSubmitEdit(e) {
     e.preventDefault()
     updateTask(value, id)
-    this.setState({
-      value: '',
-    })
+    setValue('')
   }
 
-  componentDidMount() {}
-
-  componentDidUpdate() {}
-
-  componentWillUnmount() {}
-
-  render() {
-    const { label, completed, onDeleted, onCompleted, onEdit, edit, min, sec } = this.props
-    // eslint-disable-next-line no-nested-ternary
-    const classEdit = edit ? 'editing' : completed ? 'completed' : ''
-    const editInput = (
-      <form onSubmit={this.onSubmitEdit}>
-        <input type="text" className="edit" defaultValue={label} onKeyDown={this.onChangeValue} autoFocus />
-      </form>
-    )
-    return (
-      <li className={classEdit}>
-        <div className="view">
-          <input className="toggle" type="checkbox" checked={completed} onChange={onCompleted} />
-          <label>
-            <span className="title">{label}</span>
-            <span className="description">
-              {/* <button type="button" className="icon icon-play" />
-              <button type="button" className="icon icon-pause" /> */}
-              {/* <span className="time">min sec</span> */}
-              <Timer min={min} sec={sec} />
-            </span>
-            {/* <span className="created">{formatDistanceToNow(created, { includeSeconds: true })}</span> */}
-          </label>
-          <button type="button" className="icon icon-edit" onClick={onEdit} />
-          <button type="button" className="icon icon-destroy" onClick={onDeleted} />
-        </div>
-        {edit && editInput}
-      </li>
-    )
-  }
+  // eslint-disable-next-line no-nested-ternary
+  const classEdit = edit ? 'editing' : completed ? 'completed' : ''
+  const editInput = (
+    <form onSubmit={onSubmitEdit}>
+      <input type="text" className="edit" defaultValue={label} onKeyDown={(e) => setValue(e.target.value)} autoFocus />
+    </form>
+  )
+  return (
+    <li className={classEdit}>
+      <div className="view">
+        <input className="toggle" type="checkbox" checked={completed} onChange={onCompleted} />
+        <label>
+          <span className="title">{label}</span>
+          <span className="description">
+            <Timer min={min} sec={sec} />
+          </span>
+          {/* <span className="created">{formatDistanceToNow(created, { includeSeconds: true })}</span> */}
+        </label>
+        <button type="button" className="icon icon-edit" onClick={onEdit} />
+        <button type="button" className="icon icon-destroy" onClick={onDeleted} />
+      </div>
+      {edit && editInput}
+    </li>
+  )
 }
 
 Task.defaultProps = {

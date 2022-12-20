@@ -1,66 +1,52 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-labels */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import { Component } from 'react'
+/* eslint-disable no-unused-expressions */
 
-export default class Timer extends Component {
-  state = {
-    min: this.props.min,
-    sec: this.props.sec,
-    zero: false,
-    active: false,
-  }
+import { useState, useEffect } from 'react'
 
-  update = () => {
-    const { zero, min, sec } = this.state
+export default function Timer({ min, sec }) {
+  // eslint-disable-next-line no-unused-vars
+  const [[minStart, secStart], setTime] = useState([min, sec])
+  const [zero, setZero] = useState(false)
+  const [active, setActive] = useState(false)
 
+  const update = () => {
+    if (!active) return
     if (zero) {
-      this.setState({ min, sec: sec + 1 })
-      sec === 59 && this.setState({ min: min + 1, sec: 0 })
+      setTime([minStart, secStart + 1])
+      secStart === 59 && setTime([minStart + 1, 0])
     } else {
-      this.setState({ min, sec: sec - 1 })
-      sec === 0 && this.setState({ min: min - 1, sec: 59 })
-      if (min === 0 && sec === 0) {
-        this.setState({ min: 0, sec: 0 })
-        clearInterval(this.interval)
+      setTime([minStart, secStart - 1])
+      secStart === 0 && setTime([minStart - 1, 59])
+      if (minStart === 0 && secStart === 0) {
+        setTime([0, 0])
+        setActive(false)
       }
     }
   }
 
-  startTimer = () => {
-    this.setState({ active: true })
-    this.interval = setInterval(() => this.update(), 1000)
-  }
-
-  stopTimer = () => {
-    this.setState({ active: false })
-    clearInterval(this.interval)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval)
-  }
-
-  componentDidMount() {
-    const { min, sec } = this.state
+  const startTimer = () => {
+    setActive(true)
     if (min === 0 && sec === 0) {
-      this.setState({ zero: true })
+      setZero(true)
     }
   }
 
-  render() {
-    const { active } = this.state
-
-    return (
-      <span className="description">
-        <button type="button" className="icon icon-play" onClick={this.startTimer} disabled={active} />
-        <button type="button" className="icon icon-pause" onClick={this.stopTimer} />
-        <span className="timer">
-          {this.state.min} min {this.state.sec} sec
-        </span>
-      </span>
-    )
+  function stopTimer() {
+    setActive(false)
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => update(), 1000)
+    return () => clearInterval(interval)
+  }, [secStart, active])
+
+  return (
+    <span className="description">
+      <button type="button" className="icon icon-play" onClick={() => startTimer()} disabled={active} />
+      <button type="button" className="icon icon-pause" onClick={() => stopTimer()} />
+      <span className="timer">
+        {minStart} min {secStart} sec
+      </span>
+    </span>
+  )
 }
